@@ -30,7 +30,37 @@ const handleRequest = frames(async (ctx) => {
   };
 
   return {
-    image: metadata.image,
+    image: (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px',
+          backgroundColor: 'whitesmoke',
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <h1
+          style={{
+            fontSize: '4rem',
+            marginBottom: '10px',
+          }}
+        >
+          {metadata.name}
+        </h1>
+        <p
+          style={{
+            fontSize: '2rem',
+            textAlign: 'center',
+          }}
+        >
+          {metadata.description}
+        </p>
+      </div>
+    ),
     buttons: [
       <Button
         action='tx'
@@ -43,9 +73,9 @@ const handleRequest = frames(async (ctx) => {
       <Button
         action='post'
         key={2}
-        target={`${process.env.NEXT_PUBLIC_HOST_URL}/showDetails?address=${address}`}
+        target={`${process.env.NEXT_PUBLIC_HOST_URL}/frames?address=${address}`}
       >
-        Show Details
+        Show Preview
       </Button>,
     ],
   };

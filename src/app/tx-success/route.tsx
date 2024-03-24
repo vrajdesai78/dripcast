@@ -30,25 +30,14 @@ const handleRequest = frames(async (ctx) => {
   };
 
   return {
-    image: metadata.image,
+    image: <span>You have bought {metadata.name}</span>,
     buttons: [
-      <Button
-        action='tx'
-        key={1}
-        target={`${process.env.NEXT_PUBLIC_HOST_URL}/tx?address=${address}`}
-        post_url={`${process.env.NEXT_PUBLIC_HOST_URL}/tx-success?address=${address}`}
-      >
-        Buy Now
-      </Button>,
-      <Button
-        action='post'
-        key={2}
-        target={`${process.env.NEXT_PUBLIC_HOST_URL}/showDetails?address=${address}`}
-      >
-        Show Details
+      <Button action='link' key={1} target={`https://onlyframe.vercel.app`}>
+        Check this out on OnlyFrame
       </Button>,
     ],
   };
+  ``;
 });
 
 export const GET = handleRequest;
