@@ -36,6 +36,16 @@ const handleRequest = frames(async (ctx) => {
         Check this out on OnlyFrame
       </Button>,
     ],
+    accepts: [
+      {
+        id: 'farcaster',
+        version: 'vNext',
+      },
+      {
+        id: 'xmtp',
+        version: 'vNext',
+      },
+    ],
   };
   ``;
 });
