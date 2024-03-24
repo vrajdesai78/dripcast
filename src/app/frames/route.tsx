@@ -19,7 +19,7 @@ const handleRequest = frames(async (ctx) => {
     client: publicClient,
   });
 
-  const uri = await peasContractRegistry.read.uri([1]);
+  const uri = await peasContractRegistry.read.previewImageURI();
 
   const uriResponse = await fetch(uri as string);
 
