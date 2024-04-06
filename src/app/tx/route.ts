@@ -1,4 +1,4 @@
-import { peasABI } from '@/utils/abi';
+import { DripsABI } from '@/utils/abi';
 import { TransactionTargetResponse } from 'frames.js';
 import { getFrameMessage } from 'frames.js/next/server';
 import { NextRequest, NextResponse } from 'next/server';
@@ -28,7 +28,7 @@ export async function POST(
   const address = searchParams.get('address');
 
   const calldata = encodeFunctionData({
-    abi: peasABI,
+    abi: DripsABI,
     functionName: 'mint',
     args: [frameMessage.connectedAddress],
   });
@@ -40,7 +40,7 @@ export async function POST(
 
   const peasContractRegistry = getContract({
     address: `${address}` as any,
-    abi: peasABI,
+    abi: DripsABI,
     client: publicClient,
   });
 
@@ -51,7 +51,7 @@ export async function POST(
     chainId: `eip155:${baseSepolia.id}`, // Remember Base Sepolia might not work on Warpcast yet
     method: 'eth_sendTransaction',
     params: {
-      abi: peasABI as Abi,
+      abi: DripsABI as Abi,
       to: `${address}` as any,
       data: calldata,
       value: price?.toString() ?? '0',

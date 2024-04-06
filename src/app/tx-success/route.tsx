@@ -1,4 +1,4 @@
-import { peasABI } from '@/utils/abi';
+import { DripsABI } from '@/utils/abi';
 import { createFrames, Button } from 'frames.js/next';
 import { createPublicClient, getContract, http } from 'viem';
 import { baseSepolia } from 'viem/chains';
@@ -15,7 +15,7 @@ const handleRequest = frames(async (ctx) => {
 
   const peasContractRegistry = getContract({
     address: address as `0x${string}`,
-    abi: peasABI,
+    abi: DripsABI,
     client: publicClient,
   });
 

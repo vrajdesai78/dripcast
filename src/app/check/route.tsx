@@ -2,6 +2,7 @@ import { DripsABI } from '@/utils/abi';
 import { createFrames, Button } from 'frames.js/next';
 import { createPublicClient, getContract, http } from 'viem';
 import { baseSepolia } from 'viem/chains';
+import { getFrameMessage } from '@coinbase/onchainkit/frame';
 
 const frames = createFrames();
 const handleRequest = frames(async (ctx) => {
@@ -19,15 +20,52 @@ const handleRequest = frames(async (ctx) => {
     client: publicClient,
   });
 
-  const uri = await peasContractRegistry.read.previewImageURI();
+  const json = await ctx.request.json();
 
-  const uriResponse = await fetch(uri as string);
+  const { message } = await getFrameMessage(json);
 
-  const metadata = (await uriResponse.json()) as {
-    name: string;
-    description: string;
-    image: string;
-  };
+  let solAddress;
+
+  if (message?.interactor?.verified_addresses?.sol_addresses) {
+    solAddress = message?.interactor?.verified_addresses?.sol_addresses[0];
+  }
+
+  const dripAddresses = await peasContractRegistry.read.discountedCommunities([
+    0,
+  ]);
+
+  let isDiscount = false;
+
+  if (solAddress && dripAddresses) {
+    const apiResponse = await fetch(
+      `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: '*/*',
+          'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 'my-id',
+          method: 'searchAssets',
+          params: {
+            ownerAddress: solAddress,
+            grouping: ['collection', dripAddresses],
+            page: 1,
+            limit: 2,
+          },
+        }),
+      }
+    );
+
+    const data = await apiResponse.json();
+
+    if (data?.result?.items?.length > 0) {
+      isDiscount = true;
+    }
+  }
 
   return {
     image: (
@@ -49,16 +87,10 @@ const handleRequest = frames(async (ctx) => {
             marginBottom: '10px',
           }}
         >
-          {metadata.name}
+          {isDiscount
+            ? 'Congratulations! You have Drip NFT.'
+            : 'Sorry, you do not have Drip NFT.'}
         </h1>
-        <p
-          style={{
-            fontSize: '2rem',
-            textAlign: 'center',
-          }}
-        >
-          {metadata.description}
-        </p>
       </div>
     ),
     buttons: [
