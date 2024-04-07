@@ -1,4 +1,4 @@
-## DripCast
+## DripCaster
 
 ![logo](logo.png)
 
