@@ -1,4 +1,4 @@
-## OnlyFrames
+## DripCast
 
 ![logo](onlyframes.png)
 
