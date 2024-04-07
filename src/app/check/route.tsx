@@ -37,8 +37,6 @@ const handleRequest = frames(async (ctx) => {
     args: [0],
   });
 
-  console.log('solAddress', dripAddresses);
-
   let isDiscount = false;
 
   if (solAddress && dripAddresses) {
@@ -66,10 +64,6 @@ const handleRequest = frames(async (ctx) => {
     );
 
     const data = await apiResponse.json();
-
-    console.log('solAddress', solAddress);
-    console.log('dripAddresses', dripAddresses);
-    console.log('data', data);
 
     if (data?.result?.items?.length > 0) {
       isDiscount = true;

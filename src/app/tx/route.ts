@@ -18,8 +18,6 @@ export async function POST(
 
   const frameMessage = await getFrameMessage(json);
 
-  console.log('frameMessage', frameMessage?.connectedAddress);
-
   if (!frameMessage) {
     throw new Error('No frame message');
   }
@@ -45,7 +43,6 @@ export async function POST(
   });
 
   const price = await peasContractRegistry.read.price();
-  console.log('price', price?.toString());
 
   return NextResponse.json({
     chainId: `eip155:${baseSepolia.id}`, // Remember Base Sepolia might not work on Warpcast yet

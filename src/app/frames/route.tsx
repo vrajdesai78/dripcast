@@ -21,8 +21,6 @@ const handleRequest = frames(async (ctx) => {
 
   const uri = await peasContractRegistry.read.previewImageURI();
 
-  console.log('uri', uri);
-
   const uriResponse = await fetch(uri as string);
 
   const metadata = (await uriResponse.json()) as {
@@ -30,8 +28,6 @@ const handleRequest = frames(async (ctx) => {
     description: string;
     image: string;
   };
-
-  console.log('metadata', metadata);
 
   return {
     image: metadata.image,
