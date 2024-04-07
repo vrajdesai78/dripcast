@@ -1,3 +1,309 @@
+export const DripCasterABI = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'platformOwner',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnableInvalidOwner',
+    type: 'error',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
+    name: 'OwnableUnauthorizedAccount',
+    type: 'error',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'creator',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'product',
+        type: 'address',
+      },
+    ],
+    name: 'DripsCreated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_productOwner',
+        type: 'address',
+      },
+      {
+        internalType: 'string',
+        name: '_productName',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: '_productDataURI',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: '_previewImageURI',
+        type: 'string',
+      },
+      {
+        internalType: 'uint256',
+        name: '_price',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bool',
+        name: '_finiteSupply',
+        type: 'bool',
+      },
+      {
+        internalType: 'uint256',
+        name: '_supply',
+        type: 'uint256',
+      },
+      {
+        internalType: 'string[]',
+        name: '_discountedCommunities',
+        type: 'string[]',
+      },
+    ],
+    name: 'createDrip',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'index',
+        type: 'uint256',
+      },
+    ],
+    name: 'getProduct',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'creator',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'productAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'string',
+            name: 'productName',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'productDataURI',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'previewImageURI',
+            type: 'string',
+          },
+          {
+            internalType: 'string[]',
+            name: 'discountedCommunities',
+            type: 'string[]',
+          },
+          {
+            internalType: 'bool',
+            name: 'finiteSupply',
+            type: 'bool',
+          },
+          {
+            internalType: 'uint256',
+            name: 'supply',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct DripCaster.Drips',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_creator',
+        type: 'address',
+      },
+    ],
+    name: 'getProducts',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'creator',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'productAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'string',
+            name: 'productName',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'productDataURI',
+            type: 'string',
+          },
+          {
+            internalType: 'string',
+            name: 'previewImageURI',
+            type: 'string',
+          },
+          {
+            internalType: 'string[]',
+            name: 'discountedCommunities',
+            type: 'string[]',
+          },
+          {
+            internalType: 'bool',
+            name: 'finiteSupply',
+            type: 'bool',
+          },
+          {
+            internalType: 'uint256',
+            name: 'supply',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'price',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct DripCaster.Drips[]',
+        name: '',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_creator',
+        type: 'address',
+      },
+    ],
+    name: 'getProductsCount',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];
+
 export const DripsABI = [
   {
     inputs: [
@@ -515,6 +821,19 @@ export const DripsABI = [
   },
   {
     inputs: [],
+    name: 'getDiscountedCommunities',
+    outputs: [
+      {
+        internalType: 'string[]',
+        name: '',
+        type: 'string[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'initialSupply',
     outputs: [
       {
@@ -561,34 +880,6 @@ export const DripsABI = [
     name: 'mint',
     outputs: [],
     stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'ids',
-        type: 'uint256[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'amounts',
-        type: 'uint256[]',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
-    ],
-    name: 'mintBatch',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {

@@ -30,9 +30,14 @@ const handleRequest = frames(async (ctx) => {
     solAddress = message?.interactor?.verified_addresses?.sol_addresses[0];
   }
 
-  const dripAddresses = await peasContractRegistry.read.discountedCommunities([
-    0,
-  ]);
+  const dripAddresses = await publicClient.readContract({
+    address: address as `0x${string}`,
+    functionName: 'discountedCommunities',
+    abi: DripsABI,
+    args: [0],
+  });
+
+  console.log('solAddress', dripAddresses);
 
   let isDiscount = false;
 
@@ -62,37 +67,21 @@ const handleRequest = frames(async (ctx) => {
 
     const data = await apiResponse.json();
 
+    console.log('solAddress', solAddress);
+    console.log('dripAddresses', dripAddresses);
+    console.log('data', data);
+
     if (data?.result?.items?.length > 0) {
       isDiscount = true;
     }
   }
 
   return {
-    image: (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '20px',
-          backgroundColor: 'whitesmoke',
-          width: '100%',
-          height: '100%',
-        }}
-      >
-        <h1
-          style={{
-            fontSize: '4rem',
-            marginBottom: '10px',
-          }}
-        >
-          {isDiscount
-            ? 'Congratulations! You have Drip NFT.'
-            : 'Sorry, you do not have Drip NFT.'}
-        </h1>
-      </div>
-    ),
+    image: `${
+      isDiscount
+        ? 'https://ipfs.moralis.io:2053/ipfs/QmbYFQCnGziHYuS8NWv7jdzcg7LusgBeJD8TCpJCpnDTNB'
+        : 'https://ipfs.moralis.io:2053/ipfs/QmfSbR2Rn7hxAJmanUk1WXoFR6uCWeTMkqbY9oS3fTyd5p'
+    }`,
     buttons: [
       <Button
         action='tx'

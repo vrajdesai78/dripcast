@@ -30,10 +30,11 @@ const handleRequest = frames(async (ctx) => {
   };
 
   return {
-    image: <span>You have bought {metadata.name}</span>,
+    image:
+      'https://ipfs.moralis.io:2053/ipfs/QmQMAsLmnXnL1k1TkCihF4bTiFc7c4PTFG3edNy4BoV7dG',
     buttons: [
-      <Button action='link' key={1} target={`https://onlyframe.vercel.app`}>
-        Check this out on OnlyFrame
+      <Button action='link' key={1} target={`https://dripcast.vercel.app`}>
+        Check this out on DripCaster
       </Button>,
     ],
     accepts: [
