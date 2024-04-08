@@ -4,6 +4,22 @@ import { createPublicClient, getContract, http } from 'viem';
 import { baseSepolia } from 'viem/chains';
 import { getFrameMessage } from '@coinbase/onchainkit/frame';
 
+const checkDiscount = async (solAddress: string, dripAddresses: string) => {
+  const apiResponse = await fetch(
+    `https://api.simplehash.com/api/v0/nfts/owners?chains=solana&wallet_addresses=${solAddress}&limit=1&collection_ids=${dripAddresses}`,
+    {
+      method: 'GET',
+      headers: {
+        'X-API-KEY':
+          'huddle01_sk_06c16a46-b3a4-455a-afd9-cfa252fc6ad3_nh4z4i5a1dh8yu0j',
+      },
+    }
+  );
+  const data = await apiResponse.json();
+  console.log('API Response', data);
+  return data?.nfts?.length > 0;
+};
+
 const frames = createFrames();
 const handleRequest = frames(async (ctx) => {
   const { searchParams } = new URL(ctx.url);
@@ -30,42 +46,37 @@ const handleRequest = frames(async (ctx) => {
     solAddress = message?.interactor?.verified_addresses?.sol_addresses[0];
   }
 
-  const dripAddresses = await publicClient.readContract({
-    address: address as `0x${string}`,
-    functionName: 'discountedCommunities',
-    abi: DripsABI,
-    args: [0],
-  });
+  const uri = await peasContractRegistry.read.previewImageURI();
+
+  const uriResponse = await fetch(uri as string);
+
+  const metadata = (await uriResponse.json()) as {
+    name: string;
+    description: string;
+    image: string;
+    dripAddresses: string[];
+  };
+
+  const dripAddresses = metadata.dripAddresses;
+  console.log('Drip Addresses', dripAddresses);
 
   let isDiscount = false;
 
   if (solAddress && dripAddresses) {
     const apiResponse = await fetch(
-      `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`,
+      `https://api.simplehash.com/api/v0/nfts/owners?chains=solana&wallet_addresses=${solAddress}&limit=1&collection_ids=${dripAddresses.join(
+        ','
+      )}`,
       {
-        method: 'POST',
+        method: 'GET',
         headers: {
-          Accept: '*/*',
-          'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
-          'Content-Type': 'application/json',
+          'X-API-KEY': process.env.SIMPLEHASH_API_KEY!,
         },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          id: 'my-id',
-          method: 'searchAssets',
-          params: {
-            ownerAddress: solAddress,
-            grouping: ['collection', dripAddresses],
-            page: 1,
-            limit: 2,
-          },
-        }),
       }
     );
-
     const data = await apiResponse.json();
-
-    if (data?.result?.items?.length > 0) {
+    console.log('API Response', data.nfts);
+    if (data?.nfts?.length > 0) {
       isDiscount = true;
     }
   }
@@ -80,7 +91,7 @@ const handleRequest = frames(async (ctx) => {
       <Button
         action='tx'
         key={1}
-        target={`${process.env.NEXT_PUBLIC_HOST_URL}/tx?address=${address}`}
+        target={`${process.env.NEXT_PUBLIC_HOST_URL}/tx?address=${address}&isDiscount=${isDiscount}`}
         post_url={`${process.env.NEXT_PUBLIC_HOST_URL}/tx-success?address=${address}`}
       >
         Buy Now

@@ -38,21 +38,28 @@ const handleRequest = frames(async (ctx) => {
         target={`${process.env.NEXT_PUBLIC_HOST_URL}/tx?address=${address}`}
         post_url={`${process.env.NEXT_PUBLIC_HOST_URL}/tx-success?address=${address}`}
       >
-        Buy Now
+        Base
+      </Button>,
+      <Button
+        action='link'
+        key={1}
+        target={`https://dripcaster.xyz/sol/product/${address}`}
+      >
+        SOL
       </Button>,
       <Button
         action='post'
         key={1}
         target={`${process.env.NEXT_PUBLIC_HOST_URL}/check?address=${address}`}
       >
-        Check Discount
+        Discount
       </Button>,
       <Button
         action='post'
         key={2}
         target={`${process.env.NEXT_PUBLIC_HOST_URL}/showDetails?address=${address}`}
       >
-        Show Details
+        Details
       </Button>,
     ],
     accepts: [

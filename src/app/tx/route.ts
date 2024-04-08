@@ -24,11 +24,14 @@ export async function POST(
 
   const { searchParams } = new URL(req.url);
   const address = searchParams.get('address');
+  const isDiscount = searchParams.get('isDiscount');
 
   const calldata = encodeFunctionData({
     abi: DripsABI,
-    functionName: 'mint',
-    args: [frameMessage.connectedAddress],
+    functionName: isDiscount ? 'discountedMint' : 'mint',
+    args: isDiscount
+      ? [frameMessage.connectedAddress, 50]
+      : [frameMessage.connectedAddress],
   });
 
   const publicClient = createPublicClient({
